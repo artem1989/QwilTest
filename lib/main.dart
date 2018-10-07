@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:qwil_flutter_test/message.dart';
+import 'package:qwil_flutter_test/message_row_item.dart';
 import 'package:redux/redux.dart';
 
 import 'package:qwil_flutter_test/redux/reducers.dart';
 import 'package:qwil_flutter_test/redux/app_state.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  final store = new Store<AppState>(
+      appStateReducers,
+      initialState: AppState.initial());
+  runApp(new ForeverAloneApp(store));
+}
 
-class MyApp extends StatelessWidget {
-  MyApp({Key key}) : super(key: key);
+class ForeverAloneApp extends StatelessWidget {
+  final Store<AppState> store;
+
+  ForeverAloneApp(this.store);
 
   @override
   Widget build(BuildContext context) {
     return new StoreProvider<AppState>(
-        store: new Store<AppState>(
-          appStateReducer,
-          initialState: AppState.initial(),
-        ),
+        store: this.store,
         child: new MaterialApp(
           title: 'Forever Alone',
           theme: new ThemeData(
@@ -42,7 +48,7 @@ class MyHomePage extends StatelessWidget {
         child: new Container(
           child: new Stack(
             children: <Widget>[
-              _mainDashboard(),
+              MessagesList(),
               _toggleButton(),
             ],
           ),
@@ -51,45 +57,6 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  Widget _mainDashboard() {
-    return new Column(
-      children: <Widget>[
-        _messageRow('FAKE FIRST USER',
-            "There are many variations of passages of Lorem Ipsum available,"),
-        _messageRow('SECOND USER',
-            "It is a long established fact that a reader will be distracted by the"),
-        _messageRow('ANOTHER USER',
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry."),
-      ],
-    );
-  }
-
-  Widget _messageRow(String user, String message) {
-    return Row(
-      children: [
-        Expanded(
-          child: Column(
-            children: [
-              Container(
-                child: new Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    user,
-                  ),
-                ),
-              ),
-              Text(
-                message,
-              ),
-            ],
-          ),
-        ),
-        Icon(
-          Icons.access_time,
-        ),
-      ],
-    );
-  }
 
   Widget _toggleButton() {
     return new RaisedButton(
@@ -106,5 +73,23 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  void _toggleSimulation() {}
+  void _toggleSimulation() {
+
+  }
+}
+
+class MessagesList extends StatelessWidget
+{
+  @override
+  Widget build(BuildContext context) {
+    return new StoreConnector<AppState, List<MessageItem>>(
+      converter: (store) => store.state.messageItems,
+      builder: (context, list) {
+        return new ListView.builder(
+            itemCount: list.length,
+            itemBuilder: (context, position) =>
+            new MessageRow("user", list[position].text));
+      },
+    );
+  }
 }
