@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qwil_flutter_test/message.dart';
 import 'package:qwil_flutter_test/message_row_item.dart';
+import 'package:qwil_flutter_test/redux/actions.dart';
 import 'package:redux/redux.dart';
 
 import 'package:qwil_flutter_test/redux/reducers.dart';
@@ -49,7 +50,19 @@ class MyHomePage extends StatelessWidget {
           child: new Stack(
             children: <Widget>[
               MessagesList(),
-              _toggleButton(),
+              new StoreConnector<AppState, VoidCallback>(
+                converter: (store) {
+                  return () => store.dispatch(AddItemAction(MessageItem("1111111111")));
+                },
+                builder: (context, callback) {
+                  return new IconButton(
+                    icon: new Icon(Icons.add),
+                    onPressed: () {
+                      callback();
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -58,24 +71,23 @@ class MyHomePage extends StatelessWidget {
   }
 
 
-  Widget _toggleButton() {
-    return new RaisedButton(
-      onPressed: _toggleSimulation,
-      textColor: Colors.white,
-      color: Colors.blue,
-      child: new Text(
-        'Stop',
-        style: new TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20.0,
-        ),
-      ),
-    );
-  }
 
-  void _toggleSimulation() {
 
-  }
+
+//  Widget _toggleButton() {
+//    return new RaisedButton(
+//      onPressed: _toggleSimulation,
+//      textColor: Colors.white,
+//      color: Colors.blue,
+//      child: new Text(
+//        'Stop',
+//        style: new TextStyle(
+//          fontWeight: FontWeight.bold,
+//          fontSize: 20.0,
+//        ),
+//      ),
+//    );
+//  }
 }
 
 class MessagesList extends StatelessWidget
