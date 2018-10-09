@@ -8,10 +8,13 @@ AppState appStateReducers(AppState state, dynamic action) {
     return _addItem(state.messageItems, action);
   } else if (action is UISimulationToggle) {
     return _onSimulationToggle(state, action);
+  } else if (action is EmitMessageAction) {
+    return _startSimulation(state.messageItems, action);
+  } else if (action is MessageSuccessAction) {
+    return _onMessageSuccess(state, action);
   }
   return state;
 }
-
 
 AppState _onSimulationToggle(AppState state, UISimulationToggle action) {
   return AppState(state.messageItems);
@@ -19,4 +22,12 @@ AppState _onSimulationToggle(AppState state, UISimulationToggle action) {
 
 AppState _addItem(List<MessageItem> items, AddItemAction action) {
   return new AppState(List.from(items)..add(action.item));
+}
+
+AppState _startSimulation(List<MessageItem> items, EmitMessageAction action) {
+  return new AppState(items);
+}
+
+AppState _onMessageSuccess(AppState state, MessageSuccessAction action) {
+  return new AppState(List.from(state.messageItems)..add(MessageItem(action.message)));
 }

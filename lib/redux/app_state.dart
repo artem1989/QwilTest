@@ -8,7 +8,7 @@ class AppState {
   AppState(this.messageItems);
 
   factory AppState.initial() {
-    List<MessageItem> initial = [MessageItem("First message"), MessageItem("Second message")];
+    List<MessageItem> initial = [];
     return AppState(initial);
   }
 

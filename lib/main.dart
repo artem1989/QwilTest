@@ -3,14 +3,19 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:qwil_flutter_test/message.dart';
 import 'package:qwil_flutter_test/message_row_item.dart';
 import 'package:qwil_flutter_test/redux/actions.dart';
+import 'package:qwil_flutter_test/redux/epics.dart';
+import 'package:qwil_flutter_test/users_data.dart';
 import 'package:redux/redux.dart';
+import 'package:redux_epics/redux_epics.dart';
 
 import 'package:qwil_flutter_test/redux/reducers.dart';
 import 'package:qwil_flutter_test/redux/app_state.dart';
 
 void main() {
+  final epicMiddleware = EpicMiddleware<AppState>(EmitMessageEpic(MessageApi()));
   final store = new Store<AppState>(
       appStateReducers,
+      middleware: [epicMiddleware],
       initialState: AppState.initial());
   runApp(new ForeverAloneApp(store));
 }
@@ -52,7 +57,7 @@ class MyHomePage extends StatelessWidget {
               MessagesList(),
               new StoreConnector<AppState, VoidCallback>(
                 converter: (store) {
-                  return () => store.dispatch(AddItemAction(MessageItem("1111111111")));
+                  return () => store.dispatch(EmitMessageAction());
                 },
                 builder: (context, callback) {
                   return new IconButton(

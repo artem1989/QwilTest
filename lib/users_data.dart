@@ -1,14 +1,36 @@
 import 'package:rxdart/rxdart.dart';
+import 'dart:math';
 
-Observable<dynamic> firstUserMessages() {
-  return Observable.just("TODO");
-}
+class MessageApi {
 
-Observable<dynamic> secondUserMessages() {
-  return Observable.just("TODO");
-}
+  final _random = new Random();
 
-Observable<dynamic> thirdUserMessages() {
-  return Observable.just("TODO");
+  int next(int min, int max) => min + _random.nextInt(max - min);
+
+  String _randomString(int length) {
+    var codeUnits = new List.generate(
+        length,
+            (index) {
+          return _random.nextInt(33) + 89;
+        }
+    );
+
+    return new String.fromCharCodes(codeUnits);
+  }
+
+  Observable<dynamic> firstUserMessages() {
+    return Observable.periodic(
+        Duration(seconds: next(1, 2)), (_) => _randomString(10));
+  }
+
+  Observable<dynamic> secondUserMessages() {
+    return Observable.periodic(
+        Duration(seconds: next(1, 2)), (_) => _randomString(10));
+  }
+
+  Observable<dynamic> thirdUserMessages() {
+    return Observable.periodic(
+        Duration(seconds: next(1, 2)), (_) => _randomString(10));
+  }
 }
         
