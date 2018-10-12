@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:qwil_flutter_test/message.dart';
 import 'package:qwil_flutter_test/message_row_item.dart';
 import 'package:qwil_flutter_test/redux/actions.dart';
 import 'package:qwil_flutter_test/redux/epics.dart';
-import 'package:qwil_flutter_test/users_data.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 
@@ -12,10 +10,9 @@ import 'package:qwil_flutter_test/redux/reducers.dart';
 import 'package:qwil_flutter_test/redux/app_state.dart';
 
 void main() {
-  final epicMiddleware = EpicMiddleware<AppState>(EmitMessageEpic(MessageApi()));
   final store = new Store<AppState>(
-      appStateReducers,
-      middleware: [epicMiddleware],
+      appReducer,
+      middleware: [ EpicMiddleware<AppState>(epic) ],
       initialState: AppState.initial());
   runApp(new ForeverAloneApp(store));
 }
@@ -57,15 +54,24 @@ class MyHomePage extends StatelessWidget {
               MessagesList(),
               new StoreConnector<AppState, VoidCallback>(
                 converter: (store) {
-                  return () => store.dispatch(EmitMessageAction());
+                  return () => store.dispatch(UISimulationToggle());
                 },
                 builder: (context, callback) {
-                  return new IconButton(
-                    icon: new Icon(Icons.add),
-                    onPressed: () {
-                      callback();
-                    },
-                  );
+                  return new Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[ new RaisedButton(
+                    onPressed: callback,
+                    textColor: Colors.white,
+                    color: Colors.blue,
+                    child: new Text(
+                      'Stop',
+                      style: new TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                      ),
+                    ),
+                  )]);
                 },
               ),
             ],
@@ -74,38 +80,18 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
-
-
-
-
-
-//  Widget _toggleButton() {
-//    return new RaisedButton(
-//      onPressed: _toggleSimulation,
-//      textColor: Colors.white,
-//      color: Colors.blue,
-//      child: new Text(
-//        'Stop',
-//        style: new TextStyle(
-//          fontWeight: FontWeight.bold,
-//          fontSize: 20.0,
-//        ),
-//      ),
-//    );
-//  }
 }
 
-class MessagesList extends StatelessWidget
-{
+class MessagesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, List<MessageItem>>(
-      converter: (store) => store.state.messageItems,
+    return new StoreConnector<AppState, List<String>>(
+      converter: (store) => [store.state.firstUserLastMessages, store.state.secondUserLastMessages, store.state.thirdUserLastMessages],
       builder: (context, list) {
         return new ListView.builder(
             itemCount: list.length,
             itemBuilder: (context, position) =>
-            new MessageRow("user", list[position].text));
+            new MessageRow("user " + position.toString(), list[position]));
       },
     );
   }

@@ -1,16 +1,14 @@
 import 'package:rxdart/rxdart.dart';
 import 'dart:math';
 
-class MessageApi {
+class ChatApi {
 
   final _random = new Random();
 
   int next(int min, int max) => min + _random.nextInt(max - min);
 
   String _randomString(int length) {
-    var codeUnits = new List.generate(
-        length,
-            (index) {
+    var codeUnits = new List.generate(length, (index) {
           return _random.nextInt(33) + 89;
         }
     );
@@ -32,5 +30,6 @@ class MessageApi {
     return Observable.periodic(
         Duration(seconds: next(1, 2)), (_) => _randomString(10));
   }
+
 }
         

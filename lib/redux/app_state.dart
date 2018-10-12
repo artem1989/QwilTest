@@ -1,24 +1,18 @@
 import 'package:qwil_flutter_test/message.dart';
 
 class AppState {
-  static var empty = AppState(new List());
 
-  final List<MessageItem> messageItems;
+  final String firstUserLastMessages;
+  final String secondUserLastMessages;
+  final String thirdUserLastMessages;
 
-  AppState(this.messageItems);
+  int summaryMessageDuration;
+  bool isSimulationActive;
+
+  AppState(this.firstUserLastMessages, this.secondUserLastMessages, this.thirdUserLastMessages, this.isSimulationActive);
 
   factory AppState.initial() {
-    List<MessageItem> initial = [];
-    return AppState(initial);
+    return AppState("", "", "", false);
   }
 
-  AppState.fromJson(Map<String, dynamic> json)
-      : messageItems = (json['messageItems'] as List)
-      .map((i) => new MessageItem.fromJson(i as Map<String, dynamic>))
-      .toList();
-
-  Map<String, dynamic> toJson() => {'messageItems': messageItems};
-
-  @override
-  String toString() => "$messageItems";
 }

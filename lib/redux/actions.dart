@@ -1,24 +1,38 @@
 import 'package:qwil_flutter_test/message.dart';
 
-typedef OnFinishAPI = void Function(String message);
-
-class UISimulationToggle {
-
-}
-
 class AddItemAction {
-  final MessageItem item;
+  final SummaryItem item;
 
   AddItemAction(this.item);
 }
 
-class EmitMessageAction {
+class UISimulationToggle{}
 
-  EmitMessageAction();
-}
-
-class MessageSuccessAction {
+class FirstUserMessageSuccessAction {
   final String message;
 
-  MessageSuccessAction(this.message);
+  FirstUserMessageSuccessAction(this.message);
+}
+
+class SecondUserMessageSuccessAction {
+  final String message;
+
+  SecondUserMessageSuccessAction(this.message);
+}
+
+class ThirdUserMessageSuccessAction {
+  final String message;
+
+  ThirdUserMessageSuccessAction(this.message);
+}
+
+class SummaryMessageSuccessAction {
+  final String message;
+  final int interval;
+
+  SummaryMessageSuccessAction(this.message, this.interval);
+}
+
+class EmitSummaryItem {
+
 }

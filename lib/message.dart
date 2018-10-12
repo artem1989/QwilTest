@@ -1,9 +1,9 @@
-class MessageItem {
+class SummaryItem {
   String text;
 
-  MessageItem(this.text);
+  SummaryItem(this.text);
 
-  MessageItem.fromJson(Map<String, dynamic> json)
+  SummaryItem.fromJson(Map<String, dynamic> json)
       : text = json['text'];
 
   Map<String, dynamic> toJson() => {'text': text};
