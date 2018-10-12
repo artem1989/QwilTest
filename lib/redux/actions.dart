@@ -6,7 +6,11 @@ class AddItemAction {
   AddItemAction(this.item);
 }
 
-class UISimulationToggle{}
+class UISimulationToggle {
+  bool startSimulation;
+
+  UISimulationToggle(this.startSimulation);
+}
 
 class FirstUserMessageSuccessAction {
   final String message;

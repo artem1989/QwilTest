@@ -9,6 +9,8 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:qwil_flutter_test/redux/reducers.dart';
 import 'package:qwil_flutter_test/redux/app_state.dart';
 
+typedef onToggle = Function(bool isActive);
+
 void main() {
   final store = new Store<AppState>(
       appReducer,
@@ -52,20 +54,19 @@ class MyHomePage extends StatelessWidget {
           child: new Stack(
             children: <Widget>[
               MessagesList(),
-              new StoreConnector<AppState, VoidCallback>(
+              new StoreConnector<AppState, _ViewModel>(
                 converter: (store) {
-                  return () => store.dispatch(UISimulationToggle());
+                  return _ViewModel.create(store);
                 },
-                builder: (context, callback) {
+                builder: (context, vm) {
                   return new Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[ new RaisedButton(
-                    onPressed: callback,
+                    onPressed: vm.onToggle,
                     textColor: Colors.white,
                     color: Colors.blue,
                     child: new Text(
-                      'Stop',
+                      vm.isActive ? 'Stop' : 'Start',
                       style: new TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0,
@@ -94,5 +95,16 @@ class MessagesList extends StatelessWidget {
             new MessageRow("user " + position.toString(), list[position]));
       },
     );
+  }
+}
+
+class _ViewModel {
+  final bool isActive;
+  final Function onToggle;
+
+  _ViewModel(this.isActive, this.onToggle);
+
+  factory _ViewModel.create(Store<AppState> store) {
+    return _ViewModel(store.state.isSimulationActive, () => store.dispatch(UISimulationToggle(!store.state.isSimulationActive)));
   }
 }

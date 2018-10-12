@@ -7,26 +7,26 @@ import 'package:redux/redux.dart';
 final Reducer<AppState> appReducer = combineReducers([
   new TypedReducer<AppState, FirstUserMessageSuccessAction>(_onFirstMessageSuccess),
   new TypedReducer<AppState, SecondUserMessageSuccessAction>(_onSecondMessageSuccess),
-  new TypedReducer<AppState, ThirdUserMessageSuccessAction>(_onThirdMessageSuccess)
-//  new TypedReducer<AppState, UISimulationToggle>(_onSimulationToggle),
+  new TypedReducer<AppState, ThirdUserMessageSuccessAction>(_onThirdMessageSuccess),
+  new TypedReducer<AppState, UISimulationToggle>(_onSimulationToggle)
 //  new TypedReducer<AppState, EmitSummaryItem>(_emitSummaryItem),
 //  new TypedReducer<AppState, SummaryMessageSuccessAction>(_onSummaryMessageSuccess)
 ]);
 
-_onSimulationToggle(AppState state, UISimulationToggle action) {
+AppState _onSimulationToggle(AppState state, UISimulationToggle action) {
   return new AppState(state.firstUserLastMessages, state.secondUserLastMessages, state.thirdUserLastMessages, !state.isSimulationActive);
 }
 
 AppState _onFirstMessageSuccess(AppState state, FirstUserMessageSuccessAction action) {
-  return new AppState(action.message, state.secondUserLastMessages, state.thirdUserLastMessages, !state.isSimulationActive);
+  return new AppState(action.message, state.secondUserLastMessages, state.thirdUserLastMessages, state.isSimulationActive);
 }
 
 AppState _onSecondMessageSuccess(AppState state, SecondUserMessageSuccessAction action) {
-  return new AppState(state.firstUserLastMessages, action.message, state.thirdUserLastMessages, !state.isSimulationActive);
+  return new AppState(state.firstUserLastMessages, action.message, state.thirdUserLastMessages, state.isSimulationActive);
 }
 
 AppState _onThirdMessageSuccess(AppState state, ThirdUserMessageSuccessAction action) {
-  return new AppState(state.firstUserLastMessages, state.secondUserLastMessages, action.message, !state.isSimulationActive);
+  return new AppState(state.firstUserLastMessages, state.secondUserLastMessages, action.message, state.isSimulationActive);
 }
 
 //AppState _onSummaryMessageSuccess(AppState state, SummaryMessageSuccessAction action) {

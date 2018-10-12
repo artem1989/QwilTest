@@ -23,9 +23,9 @@ class FirstUserEpic implements EpicClass<AppState> {
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<AppState> store) {
     return new Observable(actions)
         .ofType(new TypeToken<UISimulationToggle>())
-        .switchMap((action) => api.firstUserMessages().map(
+        .switchMap((action) => action.startSimulation ? api.firstUserMessages().map(
         ((message) => new FirstUserMessageSuccessAction(message))
-    ));
+    ) : Observable.just(store.state.firstUserLastMessages));
     }
 }
 
@@ -38,9 +38,9 @@ class SecondUserEpic implements EpicClass<AppState> {
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<AppState> store) {
     return new Observable(actions)
         .ofType(new TypeToken<UISimulationToggle>())
-        .switchMap((action) => api.secondUserMessages().map(
+        .switchMap((action) => action.startSimulation ? api.secondUserMessages().map(
         ((message) => new SecondUserMessageSuccessAction(message))
-    ));
+    ) : Observable.just(store.state.secondUserLastMessages));
   }
 }
 
@@ -53,9 +53,9 @@ class ThirdUserEpic implements EpicClass<AppState> {
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<AppState> store) {
     return new Observable(actions)
         .ofType(new TypeToken<UISimulationToggle>())
-        .switchMap((action) => api.thirdUserMessages().map(
+        .switchMap((action) => action.startSimulation ? api.thirdUserMessages().map(
         ((message) => new ThirdUserMessageSuccessAction(message))
-    ));
+    ) : Observable.just(store.state.thirdUserLastMessages));
   }
 }
 

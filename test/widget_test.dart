@@ -8,11 +8,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:qwil_flutter_test/main.dart';
+import 'package:qwil_flutter_test/redux/app_state.dart';
+import 'package:qwil_flutter_test/redux/epics.dart';
+import 'package:qwil_flutter_test/redux/reducers.dart';
+import 'package:redux/redux.dart';
+import 'package:redux_epics/redux_epics.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    final store = new Store<AppState>(
+        appReducer,
+        middleware: [ EpicMiddleware<AppState>(epic) ],
+        initialState: AppState.initial());
     // Build our app and trigger a frame.
-    await tester.pumpWidget(new ForeverAloneApp());
+    await tester.pumpWidget(new ForeverAloneApp(store));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
