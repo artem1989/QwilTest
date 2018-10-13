@@ -7,8 +7,9 @@ class ChatApi {
   static const INT_MIN_BOUND = 1;
   static const INT_MAX_BOUND = 2;
 
-  static const INT_MIN_BOUND_NOT_DELIVERED = 12;
-  static const INT_MAX_BOUND_NOT_DELIVERED = 16;
+  // Change this bound to test N/A messages
+  static const INT_MIN_BOUND_NOT_DELIVERED = 1;
+  static const INT_MAX_BOUND_NOT_DELIVERED = 2;
 
   static const RANDOM_STRING_LENGTH = 30;
 
