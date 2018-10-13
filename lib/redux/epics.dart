@@ -8,68 +8,70 @@ import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
 final epic = combineEpics<AppState>([
-  FirstUserEpic(ChatApi()),
-  SecondUserEpic(ChatApi()),
-  ThirdUserEpic(ChatApi()),
-  SummaryMessageEpic(SummaryApi())
+  FirstUserEpic(ChatApi(), SummaryApi()),
+  SecondUserEpic(ChatApi(), SummaryApi()),
+  ThirdUserEpic(ChatApi(), SummaryApi())
 ]);
 
 class FirstUserEpic implements EpicClass<AppState> {
   final ChatApi api;
+  final SummaryApi summaryApi;
 
-  FirstUserEpic(this.api);
+  FirstUserEpic(this.api, this.summaryApi);
 
   @override
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<AppState> store) {
     return new Observable(actions)
         .ofType(new TypeToken<UISimulationToggle>())
         .switchMap((action) => action.startSimulation ? api.firstUserMessages().map(
-        ((message) => new FirstUserMessageSuccessAction(message))
+        ((result) => new FirstUserMessageSuccessAction(result.value, result.timestamp))
     ) : Observable.just(store.state.firstUserLastMessages));
     }
 }
 
 class SecondUserEpic implements EpicClass<AppState> {
   final ChatApi api;
+  final SummaryApi summaryApi;
 
-  SecondUserEpic(this.api);
+  SecondUserEpic(this.api, this.summaryApi);
 
   @override
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<AppState> store) {
     return new Observable(actions)
         .ofType(new TypeToken<UISimulationToggle>())
         .switchMap((action) => action.startSimulation ? api.secondUserMessages().map(
-        ((message) => new SecondUserMessageSuccessAction(message))
+        ((result) => new SecondUserMessageSuccessAction(result.value, result.timestamp))
     ) : Observable.just(store.state.secondUserLastMessages));
   }
 }
 
 class ThirdUserEpic implements EpicClass<AppState> {
   final ChatApi api;
+  final SummaryApi summaryApi;
 
-  ThirdUserEpic(this.api);
+  ThirdUserEpic(this.api, this.summaryApi);
 
   @override
   Stream<dynamic> call(Stream<dynamic> actions, EpicStore<AppState> store) {
     return new Observable(actions)
         .ofType(new TypeToken<UISimulationToggle>())
         .switchMap((action) => action.startSimulation ? api.thirdUserMessages().map(
-        ((message) => new ThirdUserMessageSuccessAction(message))
+        ((result) => new ThirdUserMessageSuccessAction(result.value, result.timestamp))
     ) : Observable.just(store.state.thirdUserLastMessages));
   }
 }
 
-class SummaryMessageEpic implements EpicClass<AppState> {
-  final SummaryApi api;
-
-  SummaryMessageEpic(this.api);
-
-  @override
-  Stream<dynamic> call(Stream<dynamic> actions, EpicStore<AppState> store) {
-    return new Observable(actions)
-        .ofType(new TypeToken<EmitSummaryItem>())
-        .switchMap((action) => api.summaryMessage("123456").map(
-        ((result) => new SummaryMessageSuccessAction(result.value, result.interval.inSeconds))
-    ));
-  }
-}
+//class SummaryMessageEpic implements EpicClass<AppState> {
+//  final SummaryApi api;
+//
+//  SummaryMessageEpic(this.api);
+//
+//  @override
+//  Stream<dynamic> call(Stream<dynamic> actions, EpicStore<AppState> store) {
+//    return new Observable(actions)
+//        .ofType(new TypeToken<EmitSummaryItem>())
+//        .switchMap((action) => api.summaryMessage().map(
+//        ((result) => new SummaryMessageSuccessAction())
+//    ));
+//  }
+//}

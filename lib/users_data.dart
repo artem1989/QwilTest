@@ -16,19 +16,19 @@ class ChatApi {
     return new String.fromCharCodes(codeUnits);
   }
 
-  Observable<dynamic> firstUserMessages() {
+  Observable<Timestamped<String>> firstUserMessages() {
     return Observable.periodic(
-        Duration(seconds: next(1, 2)), (_) => _randomString(10));
+        Duration(seconds: next(1, 2)), (_) => _randomString(20)).timestamp();
   }
 
-  Observable<dynamic> secondUserMessages() {
+  Observable<Timestamped<String>> secondUserMessages() {
     return Observable.periodic(
-        Duration(seconds: next(1, 2)), (_) => _randomString(10));
+        Duration(seconds: next(1, 2)), (_) => _randomString(20)).timestamp();
   }
 
-  Observable<dynamic> thirdUserMessages() {
+  Observable<Timestamped<String>> thirdUserMessages() {
     return Observable.periodic(
-        Duration(seconds: next(1, 2)), (_) => _randomString(10));
+        Duration(seconds: next(1, 2)), (_) => _randomString(20)).timestamp();
   }
 
 }

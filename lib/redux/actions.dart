@@ -14,29 +14,25 @@ class UISimulationToggle {
 
 class FirstUserMessageSuccessAction {
   final String message;
+  final DateTime timeStamp;
 
-  FirstUserMessageSuccessAction(this.message);
+  FirstUserMessageSuccessAction(this.message, this.timeStamp);
 }
 
 class SecondUserMessageSuccessAction {
   final String message;
+  final DateTime timeStamp;
 
-  SecondUserMessageSuccessAction(this.message);
+  SecondUserMessageSuccessAction(this.message, this.timeStamp);
 }
 
 class ThirdUserMessageSuccessAction {
   final String message;
+  final DateTime timeStamp;
 
-  ThirdUserMessageSuccessAction(this.message);
+  ThirdUserMessageSuccessAction(this.message, this.timeStamp);
 }
 
-class SummaryMessageSuccessAction {
-  final String message;
-  final int interval;
+class SummaryMessageSuccessAction {}
 
-  SummaryMessageSuccessAction(this.message, this.interval);
-}
-
-class EmitSummaryItem {
-
-}
+class EmitSummaryItem {}

@@ -1,18 +1,22 @@
-import 'package:qwil_flutter_test/message.dart';
+import 'package:qwil_flutter_test/model/Summary.dart';
 
 class AppState {
+
+  final Summary summary;
 
   final String firstUserLastMessages;
   final String secondUserLastMessages;
   final String thirdUserLastMessages;
 
-  int summaryMessageDuration;
+  DateTime lastSummaryEmitted;
   bool isSimulationActive;
+  bool shouldSummaryEmitted;
 
-  AppState(this.firstUserLastMessages, this.secondUserLastMessages, this.thirdUserLastMessages, this.isSimulationActive);
+  AppState(this.summary, this.firstUserLastMessages, this.secondUserLastMessages,
+      this.thirdUserLastMessages, this.isSimulationActive, this.lastSummaryEmitted);
 
   factory AppState.initial() {
-    return AppState("", "", "", false);
+    return AppState(Summary("", "", ""), "", "", "", false, DateTime.now());
   }
 
 }

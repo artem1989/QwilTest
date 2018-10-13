@@ -87,7 +87,8 @@ class MessagesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, List<String>>(
-      converter: (store) => [store.state.firstUserLastMessages, store.state.secondUserLastMessages, store.state.thirdUserLastMessages],
+      converter: (store) => [store.state.summary.firstMessage,
+        store.state.summary.secondMessage, store.state.summary.thirdMessage],
       builder: (context, list) {
         return new ListView.builder(
             itemCount: list.length,
