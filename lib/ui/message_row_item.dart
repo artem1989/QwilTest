@@ -16,6 +16,7 @@ class MessageRow extends StatelessWidget {
           child: Column(
             children: [
               Container(
+                margin: new EdgeInsets.only(top: 5.0, left: 15.0),
                 child: new Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -23,9 +24,15 @@ class MessageRow extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
-                message,
-              ),
+          Container(
+              margin: new EdgeInsets.only(left: 15.0),
+              child:
+              new Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  message,
+                ),
+              ))
             ],
           ),
         ),
@@ -35,5 +42,4 @@ class MessageRow extends StatelessWidget {
       ],
     );
   }
-
 }

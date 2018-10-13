@@ -1,4 +1,3 @@
-import 'package:qwil_flutter_test/message.dart';
 import 'package:qwil_flutter_test/model/Summary.dart';
 
 import 'package:qwil_flutter_test/redux/actions.dart';
@@ -21,122 +20,60 @@ AppState _onSimulationToggle(AppState state, UISimulationToggle action) {
       state.firstUserLastMessages,
       state.secondUserLastMessages,
       state.thirdUserLastMessages,
-      !state.isSimulationActive,
-      state.lastSummaryEmitted);
+      !state.isSimulationActive);
 }
 
 AppState _onFirstMessageSuccess(
     AppState state, FirstUserMessageSuccessAction action) {
-  print(action.message);
-
-  Summary summary;
-  DateTime lastSummaryEmitted;
-
-  if (_isOneSecondLeft(state, action.timeStamp) && _isMessageEmitted(state)) {
-    summary = Summary(action.message, action.message,
-        state.thirdUserLastMessages);
-    lastSummaryEmitted = action.timeStamp;
-  } else {
-    summary = state.summary;
-    lastSummaryEmitted = state.lastSummaryEmitted;
-  }
 
   return new AppState(
-      summary,
+      _buildSummary(state, action.timeStamp),
       action.message,
       state.secondUserLastMessages,
       state.thirdUserLastMessages,
-      state.isSimulationActive,
-      lastSummaryEmitted);
+      state.isSimulationActive);
 }
 
 AppState _onSecondMessageSuccess(AppState state, SecondUserMessageSuccessAction action) {
-
-  Summary summary;
-  DateTime lastSummaryEmitted;
-
-  if (_isOneSecondLeft(state, action.timeStamp) && _isMessageEmitted(state)) {
-    print("11111111");
-    summary = Summary(state.firstUserLastMessages, action.message,
-        state.thirdUserLastMessages);
-    lastSummaryEmitted = action.timeStamp;
-  } else {
-    print("2222222");
-    summary = state.summary;
-    lastSummaryEmitted = state.lastSummaryEmitted;
-  }
-
   return new AppState(
-      summary,
+      _buildSummary(state, action.timeStamp),
       state.firstUserLastMessages,
       action.message,
       state.thirdUserLastMessages,
-      state.isSimulationActive,
-      lastSummaryEmitted);
+      state.isSimulationActive);
 }
 
-AppState _onThirdMessageSuccess(
-    AppState state, ThirdUserMessageSuccessAction action) {
-  print(action.message);
-
-  Summary summary;
-  DateTime lastSummaryEmitted;
-
-  if (_isOneSecondLeft(state, action.timeStamp) && _isMessageEmitted(state)) {
-    summary = Summary(state.firstUserLastMessages, state.secondUserLastMessages,
-        state.thirdUserLastMessages);
-    lastSummaryEmitted = action.timeStamp;
-  } else {
-    summary = state.summary;
-    lastSummaryEmitted = state.lastSummaryEmitted;
-  }
-
+AppState _onThirdMessageSuccess(AppState state, ThirdUserMessageSuccessAction action) {
   return new AppState(
-      summary,
+      _buildSummary(state, action.timeStamp),
       state.firstUserLastMessages,
       state.secondUserLastMessages,
       action.message,
-      state.isSimulationActive,
-      lastSummaryEmitted);
+      state.isSimulationActive);
 }
 
-bool _isOneSecondLeft(AppState state, DateTime dateTime) {
-  print(dateTime.difference(state.lastSummaryEmitted));
-  return dateTime.difference(state.lastSummaryEmitted).inSeconds > 1;
+/// Indicates whether or not one second left after last summary emitting
+/// [currentSummary] current summary object with timestamp emitted
+/// [dateTime] new message timestamp
+bool _isOneSecondLeft(Summary currentSummary, DateTime dateTime) {
+  return dateTime.difference(currentSummary.timeStamp).inSeconds > 1;
 }
 
+/// Indicated whether or not all messages have been emitted at least once
+/// [state] current app state
 bool _isMessageEmitted(AppState state) {
   return state.firstUserLastMessages.isNotEmpty &&
       state.secondUserLastMessages.isNotEmpty &&
       state.thirdUserLastMessages.isNotEmpty;
 }
 
-//AppState _onSummaryMessageSuccess(
-//    AppState state, SummaryMessageSuccessAction action) {
-//  bool emitSummary = state.firstUserLastMessages.isNotEmpty &&
-//      state.secondUserLastMessages.isNotEmpty &&
-//      state.thirdUserLastMessages.isNotEmpty &&
-//      (DateTime.now().millisecond - state.lastSummaryEmitted.millisecond >
-//          1000);
-//
-//  print(state.firstUserLastMessages.isNotEmpty);
-//  print(state.secondUserLastMessages.isNotEmpty);
-//  print(state.thirdUserLastMessages.isNotEmpty);
-//  print(DateTime.now().millisecond);
-//  print(state.lastSummaryEmitted.millisecond);
-//
-//  return new AppState(
-//      emitSummary
-//          ? [
-//              state.firstUserLastMessages,
-//              state.secondUserLastMessages,
-//              state.thirdUserLastMessages
-//            ]
-//          : [],
-//      state.firstUserLastMessages,
-//      state.secondUserLastMessages,
-//      state.thirdUserLastMessages,
-//      state.isSimulationActive,
-//      DateTime.now(),
-//      emitSummary);
-//}
+/// Build new summary item to display if conditions fit, current summary otherwise
+/// [state] current app state
+/// [timeStamp] of emitted user message
+Summary _buildSummary(AppState state, DateTime timeStamp) {
+  if (_isOneSecondLeft(state.summary, timeStamp) && _isMessageEmitted(state)) {
+    return Summary(state.firstUserLastMessages, state.secondUserLastMessages,
+        state.thirdUserLastMessages, timeStamp);
+  }
+  return state.summary;
+}

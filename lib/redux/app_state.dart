@@ -8,15 +8,15 @@ class AppState {
   final String secondUserLastMessages;
   final String thirdUserLastMessages;
 
-  DateTime lastSummaryEmitted;
   bool isSimulationActive;
-  bool shouldSummaryEmitted;
 
   AppState(this.summary, this.firstUserLastMessages, this.secondUserLastMessages,
-      this.thirdUserLastMessages, this.isSimulationActive, this.lastSummaryEmitted);
+      this.thirdUserLastMessages, this.isSimulationActive);
 
   factory AppState.initial() {
-    return AppState(Summary("", "", ""), "", "", "", false, DateTime.now());
+    // Initial summary contains empty strings and timeStamp of start application
+    Summary initialSummary = Summary("", "", "", DateTime.now());
+    return AppState(initialSummary, "", "", "", false);
   }
 
 }

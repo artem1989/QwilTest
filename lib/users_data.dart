@@ -2,34 +2,33 @@ import 'package:rxdart/rxdart.dart';
 import 'dart:math';
 
 class ChatApi {
-
   final _random = new Random();
 
-  int next(int min, int max) => min + _random.nextInt(max - min);
+  static const INT_MIN_BOUND = 1;
+  static const INT_MAX_BOUND = 2;
+  static const RANDOM_STRING_LENGTH = 20;
+
+  int _next(int min, int max) => min + _random.nextInt(max - min);
 
   String _randomString(int length) {
     var codeUnits = new List.generate(length, (index) {
-          return _random.nextInt(33) + 89;
-        }
-    );
-
+      return _random.nextInt(33) + 89;
+    });
     return new String.fromCharCodes(codeUnits);
   }
 
-  Observable<Timestamped<String>> firstUserMessages() {
-    return Observable.periodic(
-        Duration(seconds: next(1, 2)), (_) => _randomString(20)).timestamp();
-  }
+  Observable<Timestamped<String>> firstUserMessages() =>
+      _simulateTimedMessage();
 
-  Observable<Timestamped<String>> secondUserMessages() {
-    return Observable.periodic(
-        Duration(seconds: next(1, 2)), (_) => _randomString(20)).timestamp();
-  }
+  Observable<Timestamped<String>> secondUserMessages() =>
+      _simulateTimedMessage();
 
-  Observable<Timestamped<String>> thirdUserMessages() {
-    return Observable.periodic(
-        Duration(seconds: next(1, 2)), (_) => _randomString(20)).timestamp();
-  }
+  Observable<Timestamped<String>> thirdUserMessages() =>
+      _simulateTimedMessage();
 
+  Observable<Timestamped<String>> _simulateTimedMessage() {
+    return Observable.periodic(
+        Duration(seconds: _next(INT_MIN_BOUND, INT_MAX_BOUND)),
+        (_) => _randomString(RANDOM_STRING_LENGTH)).timestamp();
+  }
 }
-        
