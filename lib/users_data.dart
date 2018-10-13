@@ -6,7 +6,7 @@ class ChatApi {
 
   static const INT_MIN_BOUND = 1;
   static const INT_MAX_BOUND = 2;
-  static const RANDOM_STRING_LENGTH = 20;
+  static const RANDOM_STRING_LENGTH = 30;
 
   int _next(int min, int max) => min + _random.nextInt(max - min);
 
@@ -26,6 +26,7 @@ class ChatApi {
   Observable<Timestamped<String>> thirdUserMessages() =>
       _simulateTimedMessage();
 
+  /// Simulate timestampted observable random string messages periodically between 1 and 2 seconds
   Observable<Timestamped<String>> _simulateTimedMessage() {
     return Observable.periodic(
         Duration(seconds: _next(INT_MIN_BOUND, INT_MAX_BOUND)),

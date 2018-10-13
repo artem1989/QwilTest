@@ -48,18 +48,20 @@ class MyHomePage extends StatelessWidget {
                   return new Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new RaisedButton(
-                          onPressed: vm.onToggle,
-                          textColor: Colors.white,
-                          color: Colors.blue,
-                          child: new Text(
-                            vm.isActive ? 'Stop' : 'Start',
-                            style: new TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.0,
-                            ),
-                          ),
-                        )
+                        new Align(
+                            alignment: Alignment.center,
+                            child: new RaisedButton(
+                              onPressed: vm.onToggle,
+                              textColor: Colors.white,
+                              color: Colors.blue,
+                              child: new Text(
+                                vm.isActive ? 'Stop' : 'Start',
+                                style: new TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ))
                       ]);
                 },
               ),

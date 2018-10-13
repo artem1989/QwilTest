@@ -25,7 +25,6 @@ AppState _onSimulationToggle(AppState state, UISimulationToggle action) {
 
 AppState _onFirstMessageSuccess(
     AppState state, FirstUserMessageSuccessAction action) {
-
   return new AppState(
       _buildSummary(state, action.timeStamp),
       action.message,
