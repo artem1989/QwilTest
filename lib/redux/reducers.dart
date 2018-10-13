@@ -85,6 +85,8 @@ SummaryItem _buildSummary(AppState state, DateTime timeStamp) {
   return state.summary;
 }
 
+/// Check whether or not message item delivered more than 10 seconds ago
+/// return [String] "N/A" const if 10 seconds passed original string otherwise
 String _updateNoneDeliveredMessage(
     MessageItem messageItem, DateTime timeStamp) {
   if (timeStamp.difference(messageItem.timeStamp).inSeconds > 10) {
