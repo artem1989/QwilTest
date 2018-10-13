@@ -1,3 +1,5 @@
+import 'package:qwil_flutter_test/model/message_item.dart';
+
 /// Action triggered by start/stop simulation
 class UISimulationToggle {
   bool startSimulation;
@@ -7,24 +9,21 @@ class UISimulationToggle {
 
 /// Action triggered when first user message delivered
 class FirstUserMessageSuccessAction {
-  final String message;
-  final DateTime timeStamp;
+  final MessageItem messageItem;
 
-  FirstUserMessageSuccessAction(this.message, this.timeStamp);
+  FirstUserMessageSuccessAction(this.messageItem);
 }
 
 /// Action triggered when second user message delivered
 class SecondUserMessageSuccessAction {
-  final String message;
-  final DateTime timeStamp;
+  final MessageItem messageItem;
 
-  SecondUserMessageSuccessAction(this.message, this.timeStamp);
+  SecondUserMessageSuccessAction(this.messageItem);
 }
 
 /// Action triggered when third user message delivered
 class ThirdUserMessageSuccessAction {
-  final String message;
-  final DateTime timeStamp;
+  final MessageItem messageItem;
 
-  ThirdUserMessageSuccessAction(this.message, this.timeStamp);
+  ThirdUserMessageSuccessAction(this.messageItem);
 }

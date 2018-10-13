@@ -1,9 +1,9 @@
 /// Summary item is displayed on screen
-class Summary {
+class SummaryItem {
   final String firstMessage;
   final String secondMessage;
   final String thirdMessage;
   final DateTime timeStamp;
 
-  Summary(this.firstMessage, this.secondMessage, this.thirdMessage, this.timeStamp);
+  SummaryItem(this.firstMessage, this.secondMessage, this.thirdMessage, this.timeStamp);
 }

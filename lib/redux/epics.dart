@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:qwil_flutter_test/model/message_item.dart';
 import 'package:qwil_flutter_test/redux/actions.dart';
 import 'package:qwil_flutter_test/redux/app_state.dart';
 import 'package:qwil_flutter_test/users_data.dart';
@@ -24,8 +25,8 @@ class FirstUserEpic implements EpicClass<AppState> {
         .switchMap((action) => action.startSimulation
             ? api.firstUserMessages().map(((result) =>
                 new FirstUserMessageSuccessAction(
-                    result.value, result.timestamp)))
-            : Observable.just(store.state.firstUserLastMessages));
+                    new MessageItem(result.value, result.timestamp))))
+            : Observable.just(store.state.summary.firstMessage));
   }
 }
 
@@ -41,8 +42,8 @@ class SecondUserEpic implements EpicClass<AppState> {
         .switchMap((action) => action.startSimulation
             ? api.secondUserMessages().map(((result) =>
                 new SecondUserMessageSuccessAction(
-                    result.value, result.timestamp)))
-            : Observable.just(store.state.secondUserLastMessages));
+                    new MessageItem(result.value, result.timestamp))))
+            : Observable.just(store.state.summary.secondMessage));
   }
 }
 
@@ -58,7 +59,7 @@ class ThirdUserEpic implements EpicClass<AppState> {
         .switchMap((action) => action.startSimulation
             ? api.thirdUserMessages().map(((result) =>
                 new ThirdUserMessageSuccessAction(
-                    result.value, result.timestamp)))
-            : Observable.just(store.state.thirdUserLastMessages));
+                    new MessageItem(result.value, result.timestamp))))
+            : Observable.just(store.state.summary.thirdMessage));
   }
 }
