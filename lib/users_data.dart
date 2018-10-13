@@ -7,7 +7,7 @@ class ChatApi {
   static const INT_MIN_BOUND = 1;
   static const INT_MAX_BOUND = 2;
 
-  // Constants for testing not delivered mesages
+  // Constants for testing not delivered messages
   static const INT_MIN_BOUND_NOT_DELIVERED = 15;
   static const INT_MAX_BOUND_NOT_DELIVERED = 20;
 
@@ -28,7 +28,7 @@ class ChatApi {
   Observable<Timestamped<String>> secondUserMessages() =>
       _simulateTimedMessage(INT_MIN_BOUND, INT_MAX_BOUND);
 
-  /// Third user sends message rarely between 15 and 20 seconds
+  /// Third user sends messages rarely between 15 and 20 seconds
   Observable<Timestamped<String>> thirdUserMessages() => _simulateTimedMessage(
       INT_MIN_BOUND_NOT_DELIVERED, INT_MAX_BOUND_NOT_DELIVERED);
 
